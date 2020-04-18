@@ -1,13 +1,38 @@
-function expect(assertion, expected, unexpected) {
+function expect(assertion, expected, unexpected, testName) {
+  const errs = [];
+  if (expected === unexpected) {
+    errs.push(`Expected and unexpected values cannot be equal!`);
+  }
   if (assertion !== expected) {
-    console.error('Expected value not equal.');
+    errs.push(`Expected ${expected} but received ${assertion}.`);
   }
   if (assertion === unexpected) {
-    console.error('Unexpected value is equal?!');
+    errs.push(`Expected ${assertion} to not equal ${unexpected}.`);
   }
-  console.log('this is:', this);
+  if (!errs.length) {
+    console.log(`+ ${testName} passed!`);
+  } else {
+    console.log(`- ${testName} failed:`);
+    errs.forEach(err => {
+      console.log(`   ${err}`);
+    });
+  }
 }
 
 function test(name, testFn) {
   testFn(name);
+}
+
+function waitForText(text) {
+  return new Promise((resolve, reject) => {
+    const i = setInterval(findText, 100);
+    function findText() {
+      if (document.body.innerText.includes(text)) {
+        clearInterval(i);
+        return resolve(true);
+      }
+    }
+    findText();
+    // if (findText()) return resolve(true);
+  });
 }
