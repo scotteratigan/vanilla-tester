@@ -1,7 +1,6 @@
 setTimeout(() => {
   const newDiv = document.createAttribute('div');
   newDiv.textContent = 'This is a new div';
-  // document.body.appendChild(newDiv);
   document.querySelector('body').innerHTML += `<div>this is new</div>`;
 }, 3000);
 
@@ -23,3 +22,6 @@ test("text search", async () => {
   console.log("textFound2:", textFound2);
 });
 
+test("excessive chaining", () => {
+	expect(5).toBeEqualTo(5).not(4).not(3).not(6);
+})

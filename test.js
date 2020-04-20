@@ -8,19 +8,19 @@ function expect(assertValue) {
         if (assertValue !== null) {
           console.error(`Value ${assertValue} is not null!`);
         }
-        return { not: this.not };
+        return this;
       },
       toBeEqualTo: function (testValue) {
         if (assertValue !== testValue) {
           console.error(`Value ${assertValue} (${typeof assertValue}) is not equal to ${testValue} (${typeof testValue})!`);
         }
-        return { not: this.not };
+        return this;
       },
       not: function (notValue) {
         if (assertValue === notValue) {
           console.error(`Expect test fails not check. Test always passes?`);
         }
-        return { not: this.not };
+        return this;
       }
   }
 }
