@@ -1,65 +1,60 @@
 function test(name, testFn) {
-  testFn(name);
-}
-
-function expect(assertValue) {
-  return {
+  function expect(assertValue) {
+    const errors = [];
+    function report() {
+      if (errors.length) {
+        console.log(name, "test Failed!");
+        errors.forEach(err => console.error(err));
+      } else {
+        console.log(name, "test Passed!");
+      }
+    }
+    setTimeout(report, 0);
+  
+    return {
       toBeNull: function() {
         if (assertValue !== null) {
-          console.error(`Value ${assertValue} is not null!`);
+          const err = `Value ${assertValue} is not null!`;
+          errors.push(err)
         }
         return this;
       },
       toBeUndefined: function() {
         if (assertValue !== undefined) {
-          console.error(`Value ${assertValue} is not undefined!`);
+          const err = `Value ${assertValue} is not undefined!`;
+          errors.push(err);
         }
         return this;
       },
       toBeDefined: function() {
         if (assertValue === undefined) {
-          console.error(`Value ${assertValue} is undefined!`);
+          const err = `Value ${assertValue} is undefined!`
+          errors.push(err);
         }
         return this;
       },
       toBeEqualTo: function (testValue) {
         if (assertValue !== testValue) {
-          console.error(`Value ${assertValue} (${typeof assertValue}) is not equal to ${testValue} (${typeof testValue})!`);
+          const err = `Value ${assertValue} (${typeof assertValue}) is not equal to ${testValue} (${typeof testValue})!`
+          errors.push(err);
         }
         return this;
       },
       not: function (notValue) {
         if (assertValue === notValue) {
-          console.error(`Expect test fails not check. Test always passes?`);
+          const err = `Expect test fails not check. Test always passes?`;
+          errors.push(err);
         }
         return this;
       }
+    }
   }
+  
+  testFn(expect);
 }
 
-
-// function expect(assertion, expected, unexpected, testName) {
-//   const errs = [];
-//   if (expected === unexpected) {
-//     errs.push(`Expected and unexpected values cannot be equal!`);
-//   }
-//   if (assertion !== expected) {
-//     errs.push(`Expected ${expected} but received ${assertion}.`);
-//   }
-//   if (assertion === unexpected) {
-//     errs.push(`Expected ${assertion} to not equal ${unexpected}.`);
-//   }
-//   if (!errs.length) {
-//     console.log(`+ ${testName} passed!`);
-//   } else {
-//     console.log(`- ${testName} failed:`);
-//     errs.forEach(err => {
-//       console.log(`   ${err}`);
-//     });
-//   }
-// }
-
 function waitForText(text) {
+  // todo: add counter and reject after x seconds
   return new Promise((resolve, reject) => {
     const i = setInterval(findText, 100);
     function findText() {
