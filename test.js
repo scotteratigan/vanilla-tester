@@ -10,6 +10,18 @@ function expect(assertValue) {
         }
         return this;
       },
+      toBeUndefined: function() {
+        if (assertValue !== undefined) {
+          console.error(`Value ${assertValue} is not undefined!`);
+        }
+        return this;
+      },
+      toBeDefined: function() {
+        if (assertValue === undefined) {
+          console.error(`Value ${assertValue} is undefined!`);
+        }
+        return this;
+      },
       toBeEqualTo: function (testValue) {
         if (assertValue !== testValue) {
           console.error(`Value ${assertValue} (${typeof assertValue}) is not equal to ${testValue} (${typeof testValue})!`);
